@@ -5,7 +5,7 @@ SELECT product_line,
            WHEN EXTRACT('month' FROM date) = 8 THEN 'August'
        END AS month,
        warehouse,
-       SUM(total) - SUM(payment_fee) AS net_revenue
+       ROUND(SUM(total) - SUM(payment_fee) )AS net_revenue
 FROM sales
 -- GROUP BY month, warehouse
 WHERE client_type = 'Wholesale'
