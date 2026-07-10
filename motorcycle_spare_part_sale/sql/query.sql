@@ -1,7 +1,13 @@
-SELECT product_line, warehouse, to_char(date, 'FMMonth') AS month,
+SELECT product_line,
+       CASE
+           WHEN EXTRACT('month' FROM date) = 6 THEN 'June'
+           WHEN EXTRACT('month' FROM date) = 7 THEN 'July'
+           WHEN EXTRACT('month' FROM date) = 8 THEN 'August'
+       END AS month,
+       warehouse,
        SUM(total) - SUM(payment_fee) AS net_revenue
 FROM sales
 -- GROUP BY month, warehouse
 WHERE client_type = 'Wholesale'
-    GROUP BY product_line, warehouse, to_char(date, 'FMMonth'), extract(month FROM date)
-ORDER BY   product_line, extract(month FROM  date), net_revenue desc;
+GROUP BY product_line, warehouse, month
+ORDER BY   product_line, month, net_revenue desc;
